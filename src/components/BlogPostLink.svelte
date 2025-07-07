@@ -12,7 +12,11 @@
 <li
     class={`hover:bg-stone-800/50 md:px-4 px-2 py-2 rounded-md transition-colors duration-200`}
 >
-    <Button.Root class={`h-full w-full`} href={`/${blog.id}`}>
+    <Button.Root
+        class={`h-full w-full`}
+        href={`/${blog.id}`}
+        data-astro-prefetch={`hover`}
+    >
         <time
             class={`text-stone-500`}
             datetime={blog.data.publish_date.toISOString()}

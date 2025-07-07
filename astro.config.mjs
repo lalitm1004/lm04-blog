@@ -12,6 +12,7 @@ import mermaid from 'astro-mermaid';
 // https://astro.build/config
 export default defineConfig({
     site: 'https://blog.lm04.me',
+    prefetch: true,
     vite: {
         plugins: [devtoolsJson(), tailwindcss()]
     },
