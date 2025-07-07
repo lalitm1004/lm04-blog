@@ -1,0 +1,20 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.svelte";
+import NotFound from "../components/NotFound.svelte";
+import { SITE_TITLE } from "../consts";
+
+const title = `404 | ${SITE_TITLE}`;
+const description = "Oops!";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={title} description={description} />
+    </head>
+    <body class={`h-dvh w-dvw flex flex-col overflow-hidden`}>
+        <Header />
+        <NotFound />
+    </body>
+</html>

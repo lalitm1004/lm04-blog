@@ -1,0 +1,38 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.svelte";
+import Footer from "../components/Footer.svelte";
+import BaseHead from "../components/BaseHead.astro";
+import BlogLink from "../components/BlogLink.svelte";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getCollection } from "astro:content";
+
+const blogs = (await getCollection("blog")).sort(
+	(a, b) => b.data.publish_date.valueOf() - a.data.publish_date.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+
+	<body>
+		<Header />
+
+		<main class={`min-h-dvh pt-8 md:px-60 px-4 py-4`}>
+			<section>
+				<ul class={`flex flex-col gap-4`}>
+					{
+						blogs
+							.filter((blog) => blog.data.is_published)
+							.map((blog) => <BlogLink {blog} />)
+					}
+				</ul>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>

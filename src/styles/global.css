@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+    --font-amulya: 'Amulya', sans-serif;
+    --font-quattro: 'Quattro', sans-serif;
+
+    --font-weight-thin: 100;
+    --font-weight-extralight: 200;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+}
+
+@layer base {
+    html {
+        @apply font-quattro;
+        @apply bg-stone-950 text-amber-50;
+    }
+
+    .prose :not(pre)>code {
+        @apply bg-neutral-900 px-2 py-1 rounded-sm
+    }
+
+    /* I could not figure out how else to change the background of code blocks */
+    pre.astro-code {
+        background-color: #171717 !important
+    }
+
+    .prose :not(pre)>code::before,
+    .prose :not(pre)>code::after {
+        content: none;
+    }
+
+    /* Scrollbar styles */
+    * {
+        scrollbar-width: thin;
+        /* Firefox */
+        scrollbar-color: #525252 #171717;
+        /* Firefox */
+    }
+
+    *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #171717;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: #525252;
+        border-radius: 4px;
+        border: 2px solid #171717;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background-color: #737373;
+    }
+}
+
+
+
+@font-face {
+    font-family: 'Amulya';
+    src: url('/fonts/Amulya/Amulya-Variable.woff2') format('woff2'),
+        url('/fonts/Amulya/Amulya-Variable.woff') format('woff'),
+        url('/fonts/Amulya/Amulya-Variable.ttf') format('truetype');
+    font-weight: 300 700;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Amulya';
+    src: url('/fonts/Amulya/Amulya-VariableItalic.woff2') format('woff2'),
+        url('/fonts/Amulya/Amulya-VariableItalic.woff') format('woff'),
+        url('/fonts/Amulya/Amulya-VariableItalic.ttf') format('truetype');
+    font-weight: 300 700;
+    font-display: swap;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Quattro';
+    src: url('/fonts/iA-Writer-Quattro/iAWriterQuattroV.ttf') format('truetype');
+    font-weight: 400 700;
+    font-display: swap;
+    font-style: normal;
+}

@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.svelte";
+import Footer from "../components/Footer.svelte";
+import RenderTags from "../components/RenderTags.svelte";
+import { Button } from "bits-ui";
+
+type Props = CollectionEntry<"blog">["data"];
+
+const {
+    meta_title,
+    title,
+    description,
+    publish_date,
+    is_published,
+    blog_tags,
+} = Astro.props;
+
+const safeTitle = meta_title ?? title;
+const safeTags = blog_tags ?? [];
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={safeTitle} description={description} />
+    </head>
+
+    <body>
+        <Header />
+
+        <main class={`min-h-dvh pt-10 md:px-60 px-4 py-4`}>
+            <Button.Root
+                class={`text-stone-500 hover:underline hover:underline-offset-2`}
+                href={"/"}
+            >
+                &larr; Back
+            </Button.Root>
+
+            <article class={`flex flex-col gap-8 mt-4`}>
+                <hgroup>
+                    <time
+                        class={`text-stone-500 text-sm`}
+                        datetime={publish_date.toISOString()}
+                    >
+                        Published on
+                        {
+                            publish_date.toLocaleDateString("en-us", {
+                                year: "numeric",
+                                month: "long",
+                                day: "2-digit",
+                            })
+                        }
+                    </time>
+
+                    <h1
+                        class={`font-amulya font-bold md:text-3xl text-2xl mb-2`}
+                    >
+                        {title}
+                    </h1>
+
+                    <RenderTags tags={safeTags} />
+                </hgroup>
+
+                <div
+                    class={`prose prose-invert max-w-none text-amber-50 prose-img:block prose-img:mx-auto`}
+                >
+                    <slot />
+                </div>
+            </article>
+        </main>
+
+        <Footer />
+    </body>
+</html>
