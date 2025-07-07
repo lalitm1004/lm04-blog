@@ -10,8 +10,3 @@ blog_tags:
 Made in ~5 Hours using [AstroJs](https://github.com)!
 
 Repository: [Github](https://github.com/lalitm1004/lm04-blogs)
-
-```mermaid
-graph LR
-    A[Mermaid Works!]
-```

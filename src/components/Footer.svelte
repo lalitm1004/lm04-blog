@@ -20,7 +20,7 @@
     ];
 </script>
 
-<footer class={`flex flex-col justify-center items-center pb-4`}>
+<footer class={`flex flex-col justify-center items-center pb-4 mt-10`}>
     <ul class={`flex text-md`}>
         {#each externalAnchors as anchor (anchor.idx)}
             <li class={`group flex`}>

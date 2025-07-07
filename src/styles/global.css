@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+
 @theme {
     --font-amulya: 'Amulya', sans-serif;
     --font-quattro: 'Quattro', sans-serif;
@@ -16,6 +17,7 @@
     --font-weight-black: 900;
 }
 
+
 @layer base {
     html {
         @apply font-quattro;
@@ -28,13 +30,26 @@
 
     /* I could not figure out how else to change the background of code blocks */
     pre.astro-code {
-        background-color: #171717 !important
+        background-color: #171717 !important;
     }
 
     .prose :not(pre)>code::before,
     .prose :not(pre)>code::after {
         content: none;
+        display: none;
     }
+
+    .prose blockquote>p {
+        font-style: normal;
+        color: #fffbeb;
+    }
+
+    .prose blockquote p::before,
+    .prose blockquote p::after {
+        content: none;
+        display: none;
+    }
+
 
     /* Scrollbar styles */
     * {
@@ -63,7 +78,6 @@
         background-color: #737373;
     }
 }
-
 
 
 @font-face {
