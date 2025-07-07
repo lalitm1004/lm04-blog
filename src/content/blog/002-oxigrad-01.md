@@ -13,12 +13,12 @@ blog_tags:
 
 - [GitHub Repository](https://github.com/lalitm1004/oxigrad)
 - [PyPI](https://pypi.python.org/pypi/oxigrad)
-
+ 
 I've always wanted to understand the math and programming behind a framework like `PyTorch`. So I decided to build one, `oxigrad` will eventually be a tiny ML framework written in Rust with Python bindings.
 
 Today I'm building a scalar-valued autograd engine (I'll eventually add support for tensors and the like).
 
-An autograd engine is provides a very useful data structure for calculating the gradients of variables wrt each other.
+An autograd engine provides a very useful data structure for calculating the gradients of variables wrt each other.
 
 > Check out Andrej Karpathy's [video](https://www.youtube.com/watch?v=VMj-3S1tku0) on the topic.
 
@@ -40,7 +40,7 @@ pub struct ValueInternal {
 }
 ```
 
-This choice allows us to easily clone and pass around `Value` structs (called `nodes` from here onwards). Although an `Rc<RefCell>` implementation does make it impossible to multithread (I'll change this in the future).
+This choice allows us to easily clone and pass around `Value` structs (called `nodes` from here onwards). Although the `Rc<RefCell>` implementation does make it impossible to multithread (I'll change this in the future).
 
 Add to this the `Operation` enum (which comes in VERY handy later on) and the `BackwardFn` function type that is at the heart of oxigrad.
 
@@ -66,7 +66,7 @@ pub enum Operation {
 type BackwardFn = fn(value: &Ref<ValueInternal>)
 ```
 
-> I'll only go over the implementation of `ADD`, `MUL`, and `POWER` in this blogpost. You can check out the rest on GitHub
+> I'll only go over the implementation of `ADD`, `MUL`, and `POWER` in this blog post. You can check out the rest on GitHub
 
 ## The forward pass
 ### Implementation of ADD
@@ -75,18 +75,18 @@ type BackwardFn = fn(value: &Ref<ValueInternal>)
 impl Value {
     fn add_ref(&self, other: &Value) -> Value {
         let result = self.borrow().data + other.borrow().data;
-
+  
         let backward: BackwardFn = |out| {
             // drop to prevent multiple mutable references in b = a + a
             let mut first = out.previous[0].borrow_mut();
             first.gradient += out.gradient;
             std::mem::drop(first);
-
+  
             let mut second = out.previous[1].borrow_mut();
             second.gradient += out.gradient;
             std::mem::drop(second);
         };
-
+  
         Value::new_internal(ValueInternal::new(
             result,
             None,
@@ -98,7 +98,7 @@ impl Value {
 }
 ```
 
-Nothing too complex, simply calculate the `result` and create a backward function which is then attached to the new node created by the operation. We access the previous node's will backpropagating using the `previous` field of the `ValueInternal` struct.
+Nothing too complex, simply calculate the `result` and create a backward function which is then attached to the new node created by the operation. We access the previous node's while backpropagating using the `previous` field of the `ValueInternal` struct.
 
 In backpropagation through an addition operation, each input node’s gradient is incremented by the gradient of the output (child node), since the derivative of addition with respect to each input is 1.
 
@@ -115,7 +115,7 @@ flowchart LR
     Op --> B
 ```
 
-Here `ValueB.previous` will contain two references of `ValueA` which when calling the backwards function will cause the thread to panic due to the runtime checks of `RefCell`. Simply dropping them right after their mutable borrow prevents this issue. This problem can arise ANYWHERE there are more than one previous node's involved in an operation.
+Here `ValueB.previous` will contain two references of `ValueA` which, when calling the backwards function will cause the thread to panic due to the runtime checks of `RefCell`. Simply dropping them right after their mutable borrow prevents this issue. This problem can arise ANYWHERE there are more than one previous node's involved in an operation.
 
 ### Implementation of MUL
 
@@ -123,11 +123,11 @@ Here `ValueB.previous` will contain two references of `ValueA` which when callin
 impl Value {
     fn mul_ref(&self, other: &Value) -> Value {
         let result = self.borrow().data * other.borrow().data;
-
+  
         let backward: BackwardFn = |out| {
             let first_data = out.previous[0].borrow().data;
             let second_data = out.previous[1].borrow().data;
-
+  
             // prevent multiple mutable references in b = a * a
             let mut first = out.previous[0].borrow_mut();
             first.gradient += second_data * out.gradient;
@@ -149,7 +149,7 @@ impl Value {
 }
 ```
 
-In backpropagation through a multiplication operation, each input node's gradient is computed by multiplying the gradient of the output (child node) with the value of the other input node. This result is then added to the existing gradient of the input node.
+During backpropagation through a multiplication operation, each input node's gradient is computed by multiplying the gradient of the output (child node) with the value of the other input node. This result is then added to the existing gradient of the input node.
 
 ### Implementation of POW
 
@@ -176,11 +176,11 @@ impl Value {
 }
 ```
 
-I really wanted to restrict the power to only be an `f64` type since allowing a `Value` type might give off the wrong idea that it is possible to keep track of gradients in all possible combinations of $self^{other}$. (There most probably is I just don't know enough math rn).
+I really wanted to restrict the power to only be an `f64` type since allowing a `Value` type might give off the wrong idea that it is possible to keep track gradients for all possible combinations of $self^{other}$. (There most probably is I just don't know enough math rn).
 
 The above implementation looks just fine, except for one tiny problem. `backward` captures a variable from the environment, namely `power`. A closure that captures its environment cannot be converted into a function.
 
-There are two ways to fix this, one by converting `BackwardFn` to a `Box<dyn>` type which I don't want to. And the actual way to fix it is to store the power in the child node and retrieve it later when we need it.
+There are two ways to fix this, one by converting `BackwardFn` to a `Box<dyn>` type which I don't want to. The methos i chose to fix it is to store the power in the child node and retrieve it later when needed.
 
 We have been doing this all along, we never access `self` and `other` directly but through the child node.
 
@@ -205,11 +205,11 @@ Value::new_internal(ValueInternal::new(
 ))
 ```
 
-Now we simply retrieve the power at the time of evaluation of backward. This pattern is something I use a LOT in creating loss criterion.
+I use this pattern a lot when implementing loss functions.
 
 ## The backward pass
 
-The forward pass has now been implement, and so had most of the backward pass. All that is left is to recursively call the backward function stored on the nodes.
+The forward pass has now been implemented, and so has most of the backward pass. All that is left is to recursively call the backward function stored in the nodes.
 
 This can be easily achieved by creating a topological order.
 ```rust
@@ -264,14 +264,14 @@ impl Hash for Value {
 }
 ```
 
-Using `Rc::as_ptr` instead of a value based hash/eq impl allows use to traverse every possible path even if the nodes in one have already been visited.
+Using `Rc::as_ptr` instead of a value-based `Hash`/`Eq` implementation allows us to traverse every possible path
 
 ```mermaid
 flowchart LR
 	X["X"]
 	Y["Y"]
-	MUL1(("x"))
-	MUL2(("x"))
+	MUL1(("\*"))
+	MUL2(("\*"))
 	X --> MUL1
 	X --> MUL2
 	Y --> MUL1
@@ -287,9 +287,9 @@ flowchart LR
 	ADD --> Z
 ```
 
-Using a value based hash impl would cause us to get an incorrect value since both `X` and `Y` occur twice in `Z`'s origin tree. You would end up with only $\frac{1}{2}$ the actual gradient value.
+Using a value-based hash implementation would cause incorrect gradients, since both `X` and `Y` occur twice in `Z`'s origin tree. You would end up with only $\frac{1}{2}$ the actual gradient value.
 
 Thus we switch to a pointer based hash impl. This makes it so we don't revisit nodes on a given origin tree twice. `XY1` and `XY2` both hold a reference to the same `X` but those references have different pointer values. Using this approach we get the correct gradients assigned to every node in a graph.
 
 ## Conclusion
-There we have it. A simple autograd engine implemented in rust. To top it off, we just add pyo3 as a dependency. Write a few wrapper functions and package it up to be used in python. I'll write a blog post about it sometime soon.
+There we have it. A simple autograd engine implemented in rust. To top it off, we just add `pyo3` as a dependency, write a few wrapper functions, and package it up to be used in Python. I'll write a blog post about training a neural net using oxigrad soon.
