@@ -23,7 +23,7 @@
 <footer class={`flex flex-col justify-center items-center pb-4`}>
     <ul class={`flex text-md`}>
         {#each externalAnchors as anchor (anchor.idx)}
-            <li class={`group`}>
+            <li class={`group flex`}>
                 <Button.Root
                     class={`font-medium group-hover:underline underline-offset-2`}
                     href={anchor.href}
@@ -32,11 +32,11 @@
                 >
                     {anchor.display}
                 </Button.Root>
-            </li>
 
-            {#if anchor.idx !== externalAnchors.length - 1}
-                <p class={`mx-2`}>|</p>
-            {/if}
+                {#if anchor.idx !== externalAnchors.length - 1}
+                    <p class={`mx-2`}>|</p>
+                {/if}
+            </li>
         {/each}
     </ul>
 
