@@ -18,7 +18,11 @@ export default defineConfig({
     integrations: [
         mermaid({
             theme: 'dark',
-        }), svelte(), sitemap(), mdx()],
+        }),
+        svelte(),
+        sitemap(),
+        mdx(),
+    ],
     markdown: {
         syntaxHighlight: {
             type: 'shiki',
