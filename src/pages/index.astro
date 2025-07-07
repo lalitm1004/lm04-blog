@@ -3,11 +3,11 @@ import "../styles/global.css";
 import Header from "../components/Header.svelte";
 import Footer from "../components/Footer.svelte";
 import BaseHead from "../components/BaseHead.astro";
-import BlogLink from "../components/BlogLink.svelte";
+import BlogPostLink from "../components/BlogPostLink.svelte";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
 
-const blogs = (await getCollection("blog")).sort(
+const blogPosts = (await getCollection("blog")).sort(
 	(a, b) => b.data.publish_date.valueOf() - a.data.publish_date.valueOf(),
 );
 ---
@@ -24,11 +24,12 @@ const blogs = (await getCollection("blog")).sort(
 		<main class={`min-h-dvh pt-8 md:px-60 px-4 py-4`}>
 			<section>
 				<h1 class={`sr-only`}>lm04/blogs</h1>
+
 				<ul class={`flex flex-col gap-4`}>
 					{
-						blogs
+						blogPosts
 							.filter((blog) => blog.data.is_published)
-							.map((blog) => <BlogLink {blog} />)
+							.map((blog) => <BlogPostLink {blog} />)
 					}
 				</ul>
 			</section>

@@ -1,10 +1,10 @@
 ---
-title: "First Blog!"
+title: "First BlogPost!"
 description: "Blog website is functional!"
 publish_date: "July 07 2025"
 is_published: true
 blog_tags:
-- first-blog
+- first-blogpost
 ---
 
 Made in ~5 Hours using [AstroJs](https://github.com)!

@@ -9,20 +9,21 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.0",
-    "@astrojs/rss": "^4.0.12",
-    "@astrojs/sitemap": "^3.4.1",
-    "@astrojs/svelte": "^7.1.0",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.11.0",
     "bits-ui": "^2.8.10",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
     "svelte": "^5.35.2",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/svelte": "^7.1.0",
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/sitemap": "^3.4.1",
     "@tailwindcss/typography": "^0.5.16",
+    "mermaid": "^11.8.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "typescript": "^5.8.3",
     "vite-plugin-devtools-json": "^0.2.1"
   }
