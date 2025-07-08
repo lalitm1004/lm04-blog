@@ -5,7 +5,7 @@
 @theme {
     --font-amulya: 'Amulya', sans-serif;
     --font-quattro: 'Quattro', sans-serif;
-
+    --font-jetbrains: 'JetBrainsMono', monospace;
     --font-weight-thin: 100;
     --font-weight-extralight: 200;
     --font-weight-light: 300;
@@ -104,6 +104,14 @@
     font-family: 'Quattro';
     src: url('/fonts/iA-Writer-Quattro/iAWriterQuattroV.ttf') format('truetype');
     font-weight: 400 700;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'JetBrainsMono';
+    src: url('/fonts/JetBrainsMono/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: 400;
     font-display: swap;
     font-style: normal;
 }
