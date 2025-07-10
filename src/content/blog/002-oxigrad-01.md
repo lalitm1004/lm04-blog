@@ -11,7 +11,7 @@ blog_tags:
 - Autograd
 ---
 
-- [GitHub Repository](https://github.com/lalitm1004/oxigrad)
+- [GitHub Repository](https://github.com/lalitm1004/oxigrad/tree/autograd)
 - [PyPI](https://pypi.python.org/pypi/oxigrad)
  
 I've always wanted to understand the math and programming behind a framework like `PyTorch`. So I decided to build one, `oxigrad` will eventually be a tiny ML framework written in Rust with Python bindings.
